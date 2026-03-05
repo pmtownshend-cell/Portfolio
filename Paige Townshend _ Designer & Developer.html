@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html -->
+<html lang="en" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ============================================================
+    SITE TITLE
+    Change this to your name and role
+  ============================================================ -->
+  <title>Paige Townshend | Designer &amp; Developer</title>
+
+  <!-- Fonts -->
+  <!-- Aktiv Grotesk is served via Adobe Fonts (Typekit).
+       To use it: go to https://fonts.adobe.com/fonts/aktiv-grotesk,
+       create a project kit, and replace XXXXXXX below with your kit ID.
+       Until then, the site falls back to a clean system sans-serif. -->
+  <link rel="stylesheet" href="./Paige Townshend _ Designer &amp; Developer_files/XXXXXXX.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link href="./Paige Townshend _ Designer &amp; Developer_files/css2" rel="stylesheet">
+
+  <!-- ============================================================
+    JAVASCRIPT — Navigation & Theme
+    These run early so nav links work immediately.
+    Page titles are set in the navigate() function below.
+  ============================================================ -->
+  <script>
+    /* ---------- ROUTER ----------
+       Called by onclick="navigate('page-name')" on every nav link.
+       Page names match the id of each <div class="page" id="page-XXX"> below.
+    -------------------------------- */
+    function navigate(page) {
+      // Hide all pages and deactivate all nav links
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-link[data-page]').forEach(l => l.classList.remove('active'));
+
+      // Show the target page with a fresh animation
+      var target = document.getElementById('page-' + page);
+      if (target) {
+        target.style.animation = 'none';
+        target.classList.add('active');
+        requestAnimationFrame(function() { target.style.animation = ''; });
+        window.scrollTo(0, 0);
+      }
+
+      // Highlight the matching nav link
+      var link = document.querySelector('.nav-link[data-page="' + page + '"]');
+      if (link) link.classList.add('active');
+
+      // Update the browser tab title — edit these to match your pages
+      var titles = {
+        home:              'Paige Townshend | Designer & Developer',
+        about:             'About | Paige Townshend',
+        projects:          'Projects | Paige Townshend',
+        testimonials:      'Kind Words | Paige Townshend',
+        writing:           'Writing | Paige Townshend',
+        reading:           'Reading List | Paige Townshend',
+        tools:             'Tools | Paige Townshend',
+        contact:           'Contact | Paige Townshend',
+        'article-1':       'Retention Marketing | Paige Townshend',
+        'article-2':       'Designing Emails | Paige Townshend',
+        'article-3':       'Design Systems | Paige Townshend',
+        'article-4':       'Fashion & Web Design | Paige Townshend'
+      };
+      document.title = titles[page] || 'Your Name';
+    }
+
+    /* ---------- THEME ----------
+       Called by onclick="setTheme('light'|'dark'|'auto')" on the theme buttons.
+       'auto' follows the OS preference.
+    -------------------------------- */
+    function setTheme(mode) {
+      document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); });
+      var btn = document.querySelector('.theme-btn:nth-child(' + (mode === 'light' ? 1 : mode === 'dark' ? 2 : 3) + ')');
+      if (btn) btn.classList.add('active');
+
+      if (mode === 'auto') {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', mode);
+      }
+      try { localStorage.setItem('theme', mode); } catch(e) {}
+    }
+
+    // Apply saved theme on load (prevents flash of wrong theme)
+    try { setTheme(localStorage.getItem('theme') || 'auto'); } catch(e) { setTheme('auto'); }
+
+    // Keep 'auto' in sync if the OS theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+      if (localStorage.getItem('theme') === 'auto') {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+
+    function filterReading(tag, btn) {
+      document.querySelectorAll('.reading-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.reading-card').forEach(card => {
+        card.style.display = (tag === 'all' || card.dataset.tag === tag) ? 'flex' : 'none';
+      });
+    }
+
+    // Keyboard shortcuts — number keys match the nav numbers on the left
+    document.addEventListener('keydown', function(e) {
+      // Don't fire if user is typing in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      var map = {
+        '1': 'home',
+        '2': 'about',
+        '3': 'projects',
+        '4': 'testimonials',
+        '5': 'writing',
+        '6': 'reading',
+        '7': 'tools',
+        '9': 'contact'
+      };
+      if (map[e.key]) navigate(map[e.key]);
+    });
+    window.addEventListener('DOMContentLoaded', function() {
+      var hour = new Date().getHours();
+      var mins = new Date().getMinutes();
+      var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : (hour < 19 || (hour === 19 && mins < 30)) ? 'Good evening' : 'Good night';
+      var el = document.getElementById('greeting');
+      if (el) el.textContent = greeting;
+    });
+
+    /* ---------- HISTORY & SWIPE BACK ---------- */
+    var pageHistory = ['home'];
+
+    function goBack() {
+      if (pageHistory.length > 1) {
+        pageHistory.pop();
+        var prev = pageHistory[pageHistory.length - 1];
+        // Call core navigation directly without pushing to history
+        document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelectorAll('.nav-link[data-page]').forEach(function(l) { l.classList.remove('active'); });
+        var target = document.getElementById('page-' + prev);
+        if (target) { target.classList.add('active'); window.scrollTo(0, 0); }
+        var link = document.querySelector('.nav-link[data-page="' + prev + '"]');
+        if (link) link.classList.add('active');
+      }
+    }
+
+    // Patch navigate to track history after DOM is ready
+    window.addEventListener('DOMContentLoaded', function() {
+      var orig = window.navigate;
+      window.navigate = function(page) {
+        if (pageHistory[pageHistory.length - 1] !== page) {
+          pageHistory.push(page);
+        }
+        orig(page);
+      };
+    });
+
+    // Trackpad two-finger swipe right = go back (Mac gesture)
+    (function() {
+      var cooldown = false;
+
+      document.addEventListener('wheel', function(e) {
+        // Only act on strong horizontal swipes (trackpad gesture)
+        if (Math.abs(e.deltaX) < 40) return;           // too weak
+        if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return; // mostly vertical scroll
+        if (cooldown) return;
+
+        if (e.deltaX < -40) {
+          // Swiped right → go back
+          goBack();
+          cooldown = true;
+          setTimeout(function() { cooldown = false; }, 600);
+        }
+      }, { passive: true });
+
+      // Touch swipe (mobile/trackpad)
+      var startX = 0, startY = 0;
+      document.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+      document.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - startX;
+        var dy = Math.abs(e.changedTouches[0].clientY - startY);
+        if (dx > 60 && dy < 60) goBack();
+      }, { passive: true });
+    })();
+  </script>
+
+  <style>
+
+    /* ============================================================
+      CSS VARIABLES — Colours & Sizes
+      Edit these to retheme the whole site at once.
+      Light mode values are in :root, dark mode overrides below.
+    ============================================================ */
+    :root {
+      /* Backgrounds */
+      --bg:         #f0f0f0;
+      --surface:    #ffffff;   /* Cards stay white */
+      --surface2:   #ebebeb;   /* Hover states */
+      --border:     #e5e5e5;   /* Borders & dividers */
+
+      /* Text */
+      --text:       #1a1916;   /* Primary text */
+      --text-muted: #706e67;   /* Secondary text */
+      --text-faint: #a09e97;   /* Captions, labels */
+
+      /* Accent (used for links, tags, logo) */
+      --accent:       #2a5c45;
+      --accent-hover: #1e4433;
+      --link:         #2a5c45;
+      --tag-bg:       #dde8e3;
+      --tag-text:     #2a5c45;
+
+      /* Cards */
+      --card-bg:    #ffffff;
+      --card-hover: #f5f5f5;
+
+      /* Sidebar */
+      --nav-bg:     transparent;
+      --nav-border: #e3e3e3;
+
+      /* Misc */
+      --shadow:    rgba(0, 0, 0, 0.08);
+      --radius:    8px;
+      --radius-sm: 6px;
+    }
+
+    /* Dark mode overrides */
+    [data-theme="dark"] .main { background: #242424; }
+    [data-theme="dark"] {
+      --bg:         #1a1a1a;
+      --surface:    #242424;
+      --surface2:   #2e2e2e;
+      --border:     #383838;
+      --text:       #f0ede6;
+      --text-muted: #8a8880;
+      --text-faint: #555350;
+      --accent:       #5aad85;
+      --accent-hover: #6ec49a;
+      --link:         #5aad85;
+      --tag-bg:       #1e2e27;
+      --tag-text:     #5aad85;
+      --card-bg:    #242424;
+      --card-hover: #2c2c2c;
+      --nav-bg:     transparent;
+      --nav-border: #303030;
+      --shadow:     rgba(0, 0, 0, 0.3);
+    }
+
+
+    /* ============================================================
+      BASE STYLES
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { font-size: 15px; }
+    html  { height: 100%; background: var(--bg); }
+    body  { font-family: 'aktiv-grotesk', 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100%; transition: background 0.2s, color 0.2s; padding: 8px 8px 8px 0; overflow: hidden; }
+    a     { color: inherit; text-decoration: none; }
+
+
+    /* ============================================================
+      SIDEBAR — Left navigation panel
+    ============================================================ */
+    .sidebar {
+      position: fixed;
+      top: 8px; left: 0; bottom: 0;
+      width: 240px;
+      background: var(--nav-bg);
+
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    /* Logo / name at top of sidebar */
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 18px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .logo-light { display: flex; }
+    .logo-dark  { display: none; }
+    [data-theme="dark"] .logo-light { display: none; }
+    [data-theme="dark"] .logo-dark  { display: flex; }
+    @media (prefers-color-scheme: dark) { [data-theme="auto"] .logo-light { display: none; } [data-theme="auto"] .logo-dark { display: flex; } }
+    .logo-bolt {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      border-radius: 7px;
+      display: grid; place-items: center;
+      color: white; font-size: 14px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .logo-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    /* Nav group labels e.g. "Resources", "Connect" */
+    .nav-section       { padding: 6px 0; }
+    .nav-section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 8px 18px 4px;
+    }
+
+    /* Individual nav buttons */
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      margin: 2px 8px;
+      font-size: 0.87rem;
+      font-weight: 400;
+      color: var(--text);
+      border-radius: 8px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .nav-link:hover  { background: rgba(0,0,0,0.06); }
+    [data-theme="dark"] .nav-link:hover { background: rgba(255,255,255,0.07); }
+    .nav-link.active { background: #ffffff; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.05); }
+    [data-theme="dark"] .nav-link.active { background: #2e2e2e; box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px var(--border); }
+
+    .nav-link .nav-icon        { width: 18px; height: 18px; opacity: 0.7; flex-shrink: 0; }
+    .nav-link.active .nav-icon { opacity: 1; }
+    .nav-link .nav-num {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-family: 'Geist Mono', monospace;
+      color: var(--text-faint);
+      width: 20px; height: 20px;
+      border-radius: 5px;
+      display: grid; place-items: center;
+    }
+
+    /* Thin divider line between nav groups */
+    .nav-divider { height: 1px; background: var(--border); margin: 6px 18px; }
+
+    /* Light / Dark / Auto toggle at the bottom */
+    .theme-row    { margin-top: auto; padding: 14px 18px 6px; border-top: 1px solid var(--border); }
+    .theme-label  { font-size: 0.68rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .theme-toggle { display: flex; background: var(--surface2); border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn {
+      flex: 1; padding: 5px 0;
+      font-size: 0.72rem; font-family: 'Geist', sans-serif; font-weight: 500;
+      color: var(--text-muted); background: none; border: none;
+      border-radius: 6px; cursor: pointer; transition: all 0.15s;
+    }
+    .theme-btn.active { background: var(--bg); color: var(--text); box-shadow: 0 1px 3px var(--shadow); }
+
+
+    /* ============================================================
+      PAGES — Main content area
+      Each page is hidden by default; .active makes it visible.
+    ============================================================ */
+    .main  { margin-left: 240px; flex: 1; background: #ffffff; border-radius: 10px; overflow-y: auto; }
+    .page  { display: none; width: 100%; max-width: 680px; padding: 48px 48px 80px; }
+    .page[id^="page-article"] { max-width: 1000px; }
+    .page.active { display: block; animation: fadeUp 0.22s ease both; }
+    #page-home { max-width: 100%; padding-left: 10px; padding-top: 24px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Standard page header used on all pages except Home */
+    .page-header  { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .page-eyebrow { font-size: 0.72rem; font-family: 'Geist Mono', monospace; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .page-title   { font-family: 'Instrument Serif', serif; font-size: 2rem; font-weight: 400; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
+    .page-desc    { margin-top: 10px; font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; max-width: 520px; }
+
+    /* Section header with "View All" link — used on Home page */
+    .section        { margin-bottom: 52px; }
+    .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+    .section-title  { font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-weight: 400; color: var(--text); }
+    .view-all       { font-size: 0.78rem; color: var(--text-faint); font-family: 'Geist Mono', monospace; cursor: pointer; transition: color 0.15s; }
+
+
+    /* ============================================================
+      HOME PAGE — Layout & Sections
+    ============================================================ */
+
+    /* Hero: giant greeting + one-line subtitle */
+    .hero { padding: 52px 52px 0; }
+    .hero-greeting {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .hero-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+    .hero-subtitle a { color: inherit; }
+    .hero-subtitle a:hover { text-decoration: underline; }
+
+    /* Intro grid: top + bottom border only, columns divided, NO outer left/right border */
+    .home-intro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: 48px 0 0;
+      align-items: start;
+    }
+    .home-intro-col {
+      display: flex;
+      flex-direction: column;
+      padding: 0 4px;
+      border-left: 1px solid var(--border);
+    }
+    .home-intro-col:first-child { padding-left: 0; border-left: none; }
+    .home-intro-cell {
+      position: relative;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      border-radius: 6px;
+      transition: background 0.15s;
+      cursor: default;
+      margin-bottom: 4px;
+    }
+    .home-intro-cell::after {
+      content: "×";
+      position: absolute;
+      top: 10px; right: 12px;
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .home-intro-cell:hover { background: var(--surface2); }
+    .home-intro-cell:hover::after { opacity: 1; }
+    .home-intro-cell a { color: inherit; }
+    .home-intro-cell a:hover { text-decoration: underline; }
+
+    /* All home sections share this wrapper */
+    .home-section { padding: 0 52px; margin-top: 52px; }
+    .home-section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+    .home-section-title  { font-size: 1.05rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+    .home-view-all       { font-size: 0.78rem; color: var(--text-faint); cursor: pointer; }
+
+    /* ---- UPDATES: 4 individual cards with grey bg + border ---- */
+    .home-updates-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .home-update {
+      display: flex; flex-direction: column;
+      background: #f7f7f7;
+      border: 1px solid #f7f7f7;
+      border-radius: var(--radius);
+      padding: 18px;
+      transition: background 0.15s;
+    }
+    .home-update:hover { background: #f2f2f2; }
+    .home-update-icon  {
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid var(--border); background: var(--surface);
+      display: grid; place-items: center; font-size: 1rem;
+      margin-bottom: 14px; overflow: hidden; flex-shrink: 0;
+    }
+    .home-update-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .home-update-title { font-size: 0.87rem; font-weight: 500; color: var(--text); line-height: 1.45; margin-bottom: 8px; transition: color 0.15s; }
+    .home-update-desc  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+    .home-update-date  { font-size: 0.72rem; color: var(--text-faint); margin-top: auto; }
+
+    /* ---- BLOG: outer border, 4 cols, images flush, NO column dividers ---- */
+    /* Each blog card is its own individual box — grey bg, border, rounded */
+    .home-grid-box { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .home-blog-grid { display: contents; } /* grid is on home-grid-box now */
+    .home-blog-card {
+      display: flex; flex-direction: column;
+      cursor: pointer;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: box-shadow 0.15s;
+    }
+    .home-blog-card:hover { box-shadow: 0 2px 10px var(--shadow); }
+    .home-blog-thumb-placeholder { width: 100%; aspect-ratio: 3/2; display: block; flex-shrink: 0; border-radius: 10px; overflow: hidden; }
+    .home-blog-thumb-wrapper { padding: 10px 10px 0; }
+    .home-blog-thumb-wrapper img, .home-blog-thumb-wrapper .home-blog-thumb-placeholder { border-radius: 10px; width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; }
+    .home-blog-body  { padding: 14px 14px 16px; flex: 1; }
+    .home-blog-title { font-size: 0.87rem; font-weight: 600; color: var(--text); line-height: 1.45; margin-bottom: 8px; transition: color 0.15s; }
+    .home-blog-desc  { font-size: 0.77rem; color: var(--text-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* ---- READING: individual cards, white bg, grey on hover ---- */
+    .home-reading-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .home-reading-item {
+      display: flex; align-items: start; gap: 10px;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: background 0.15s;
+    }
+    .home-reading-item:hover { background: var(--card-bg); }
+    .home-reading-favicon { width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0; margin-top: 1px; background: var(--surface2); }
+    .home-reading-title { font-size: 0.82rem; font-weight: 400; color: var(--text); line-height: 1.4; transition: color 0.15s; }
+    .home-reading-tag   { font-size: 0.7rem; color: var(--text-faint); margin-top: 2px; }
+
+    /* ---- TOOLS: individual cards, white bg, grey on hover ---- */
+    .home-tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .home-tool-item  {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: background 0.15s;
+    }
+    .home-tool-item:hover { background: var(--card-bg); }
+    .home-tool-icon  {
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid var(--border); background: var(--surface);
+      display: grid; place-items: center; font-size: 1rem;
+    }
+    .home-tool-name { font-size: 0.87rem; font-weight: 500; color: var(--text); transition: color 0.15s; line-height: 1.3; }
+    .home-tool-desc { font-size: 0.77rem; color: var(--text-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* ============================================================
+      UPDATE CARDS — Used on Home and About pages
+      Each card shows: icon | title + description | date
+    ============================================================ */
+    .updates-grid { display: flex; flex-direction: column; gap: 6px; }
+    .update-card  {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .update-card:hover { background: var(--card-hover); }
+    .update-thumb { width: 52px; height: 52px; border-radius: 8px; background: var(--surface2); display: grid; place-items: center; font-size: 1.3rem; }
+    .update-title { font-size: 0.9rem; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 4px; }
+    .update-arrow { font-size: 0.75rem; color: var(--text-faint); }
+    .update-desc  { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .update-date  { font-size: 0.72rem; font-family: 'Geist Mono', monospace; color: var(--text-faint); }
+
+
+
+    /* ============================================================
+      ARTICLE PAGE — Blog post reader view
+    ============================================================ */
+    .article-wrap {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 48px;
+      align-items: start;
+      max-width: 900px;
+    }
+    .article-breadcrumb {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      margin-bottom: 28px;
+    }
+    .article-breadcrumb a { color: var(--text-faint); cursor: pointer; }
+    .article-breadcrumb a:hover { color: var(--link); }
+    .article-breadcrumb span { margin: 0 6px; }
+    .article-read-time {
+      display: inline-block;
+      font-size: 0.78rem;
+      color: var(--text);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .article-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .article-intro {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+    .article-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
+    }
+    .article-body h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 32px 0 12px;
+      line-height: 1.3;
+    }
+    .article-body p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-sidebar {
+      position: sticky;
+      top: 24px;
+      text-align: right;
+    }
+    .article-author-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-left: auto;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .article-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .article-author-name { font-size: 0.87rem; font-weight: 600; color: var(--text); }
+    .article-author-handle { font-size: 0.78rem; color: var(--text-faint); margin-bottom: 20px; }
+    .article-published-label { font-size: 0.72rem; color: var(--text-faint); margin-bottom: 4px; }
+    .article-published-date  { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+
+    /* ============================================================
+      BLOG CARDS — Writing page and Home preview
+    ============================================================ */
+    .blog-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .blog-card  {
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .blog-card:hover          { background: var(--card-hover); transform: translateY(-1px); }
+    .blog-thumb-placeholder   { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, var(--surface2), var(--surface)); display: grid; place-items: center; font-size: 2rem; }
+    .blog-body                { padding: 14px; flex: 1; }
+    .blog-title               { font-size: 0.87rem; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 6px; display: flex; align-items: start; justify-content: space-between; gap: 6px; }
+    .blog-title span:first-child { flex: 1; }
+    .blog-desc                { font-size: 0.77rem; color: var(--text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+
+    /* ============================================================
+      READING LIST CARDS
+    ============================================================ */
+    /* Reading list filter tabs */
+    .reading-filters { display: flex; align-items: center; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+    .reading-filter-btn { padding: 10px 16px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s; }
+    .reading-filter-btn.active { color: var(--text); font-weight: 500; border-bottom-color: var(--text); }
+    .reading-filter-btn:hover { color: var(--text); }
+
+    /* Reading list cards */
+    .reading-grid { display: flex; flex-direction: column; gap: 8px; }
+    .reading-card {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .reading-card:hover  { background: var(--surface2); }
+    .reading-favicon     { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
+    .reading-info        { min-width: 0; flex: 1; }
+    .reading-title       { font-size: 0.92rem; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .reading-url         { font-size: 0.75rem; color: var(--text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .reading-tags        { display: flex; gap: 6px; flex-shrink: 0; }
+    .reading-tag         { display: inline-block; font-size: 0.72rem; background: var(--tag-bg); color: var(--tag-text); border-radius: 4px; padding: 2px 8px; }
+    .reading-arrow       { font-size: 0.72rem; color: var(--text-faint); flex-shrink: 0; }
+
+
+    /* ============================================================
+      TOOL CARDS
+    ============================================================ */
+    .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tool-card  {
+      display: grid; grid-template-columns: 42px 1fr; gap: 12px;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--card-bg); border: 1px solid var(--border);
+      align-items: start; transition: background 0.15s;
+    }
+    .tool-card:hover          { background: var(--card-hover); }
+    .tool-icon-placeholder    { width: 42px; height: 42px; border-radius: 9px; background: var(--surface2); display: grid; place-items: center; font-size: 1.2rem; }
+    .tool-name                { font-size: 0.87rem; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .tool-desc                { font-size: 0.77rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+
+    /* ============================================================
+      PROJECT CARDS
+    ============================================================ */
+    .projects-grid { display: flex; flex-direction: column; gap: 16px; }
+    .project-card  {
+      display: flex; flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      transition: box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .project-card:hover   { box-shadow: 0 4px 16px var(--shadow); }
+    .project-image        { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .project-image img    { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .project-body         { padding: 20px 22px; }
+    .project-name         { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .project-desc         { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+    .project-meta         { display: flex; gap: 6px; flex-wrap: wrap; }
+    .project-tag          { font-size: 0.72rem; color: var(--text-faint); }
+    .project-tag:not(:last-child)::after { content: " · "; }
+
+
+    /* ============================================================
+      TESTIMONIAL CARDS
+    ============================================================ */
+    .testimonials-grid  { display: flex; flex-direction: column; gap: 12px; }
+    .testimonial-card   { padding: 20px; border-radius: var(--radius); background: var(--card-bg); border: 1px solid var(--border); }
+    .testimonial-quote  { font-family: 'Instrument Serif', serif; font-size: 1rem; font-style: italic; color: var(--text); line-height: 1.65; margin-bottom: 14px; }
+    .testimonial-quote::before { content: '"'; font-size: 2rem; color: var(--accent); line-height: 0; vertical-align: -0.4em; margin-right: 3px; }
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .author-avatar      { width: 32px; height: 32px; border-radius: 50%; background: var(--surface2); display: grid; place-items: center; font-size: 0.85rem; flex-shrink: 0; }
+    .author-name        { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .author-role        { font-size: 0.75rem; color: var(--text-faint); }
+
+
+    /* ============================================================
+      ABOUT PAGE — specific components
+    ============================================================ */
+
+    /* Bio paragraph at top */
+    .about-bio      { font-size: 0.95rem; line-height: 1.8; color: var(--text-muted); max-width: 600px; margin-bottom: 48px; }
+    .about-bio a    { color: var(--link); border-bottom: 1px solid currentColor; }
+    .about-bio strong { color: var(--text); font-weight: 600; }
+
+    /* Section wrapper and title */
+    .about-section       { margin-bottom: 48px; }
+    .about-section-title { font-family: 'Instrument Serif', serif; font-size: 1.35rem; font-weight: 400; color: var(--text); margin-bottom: 20px; }
+
+    /* Personal updates timeline */
+    .about-updates      { display: flex; flex-direction: column; gap: 2px; }
+    .about-update       { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: start; padding: 10px 12px; border-radius: var(--radius-sm); transition: background 0.15s; }
+    .about-update:hover { background: var(--card-bg); }
+    .about-update-icon  { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; overflow: hidden; }
+    .about-update-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .about-update-title { font-size: 0.87rem; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 3px; }
+    .about-update-desc  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .about-update-date  { font-size: 0.7rem; font-family: 'Geist Mono', monospace; color: var(--text-faint); white-space: nowrap; padding-top: 2px; }
+
+    /* Tech stack rows */
+    .about-stack-desc { font-size: 0.87rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; max-width: 560px; }
+    .stack-row        { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .stack-label      { font-size: 0.75rem; font-family: 'Geist Mono', monospace; color: var(--text-faint); width: 90px; flex-shrink: 0; }
+    .stack-icons      { display: flex; gap: 6px; flex-wrap: wrap; }
+    .stack-icon       { width: 28px; height: 28px; border-radius: 6px; background: var(--surface2); display: grid; place-items: center; font-size: 1rem; border: 1px solid var(--border); }
+
+    /* Career timeline */
+    .career-list          { display: flex; flex-direction: column; }
+    .career-item          { display: grid; grid-template-columns: 90px 1fr; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .career-item:first-child { border-top: 1px solid var(--border); }
+    .career-years         { font-size: 0.72rem; font-family: 'Geist Mono', monospace; color: var(--text-faint); padding-top: 3px; line-height: 1.4; }
+    .career-role          { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .career-company       { font-size: 0.82rem; color: var(--link); margin-bottom: 5px; }
+    .career-desc          { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+
+    /* "How this site was made" body text */
+    .about-made-text      { font-size: 0.87rem; color: var(--text-muted); line-height: 1.75; max-width: 580px; }
+    .about-made-text p    { margin-bottom: 12px; }
+    .about-made-text ol   { padding-left: 20px; margin: 12px 0; }
+    .about-made-text li   { margin-bottom: 6px; }
+    .about-made-text a    { color: var(--link); border-bottom: 1px solid currentColor; }
+
+    /* Contact table at the bottom of About */
+    .about-contact-grid        { display: flex; flex-direction: column; }
+    .about-contact-row         { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .about-contact-row:first-child { border-top: 1px solid var(--border); }
+    .about-contact-label       { font-size: 0.75rem; font-family: 'Geist Mono', monospace; color: var(--text-faint); width: 120px; flex-shrink: 0; }
+    .about-contact-value       { font-size: 0.87rem; color: var(--text); flex: 1; }
+    .about-contact-value a     { color: var(--link); }
+    .about-contact-action      { font-size: 0.78rem; color: var(--text-faint); display: flex; gap: 10px; }
+    .about-contact-action a    { color: var(--text-muted); transition: color 0.15s; }
+    .about-contact-action a:hover { color: var(--link); }
+    .social-links              { display: flex; gap: 8px; flex-wrap: wrap; }
+    .social-link               { font-size: 0.78rem; color: var(--text-muted); padding: 4px 10px; border: 1px solid var(--border); border-radius: 20px; transition: all 0.15s; }
+    .social-link:hover         { border-color: var(--accent); color: var(--link); }
+
+
+    /* ============================================================
+      CONTACT PAGE
+    ============================================================ */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .contact-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      background: var(--card-bg); border: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .contact-card:hover  { background: var(--card-hover); }
+    .contact-icon        { width: 36px; height: 36px; border-radius: 8px; background: var(--tag-bg); display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-label       { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+    .contact-handle      { font-size: 0.75rem; color: var(--text-faint); font-family: 'Geist Mono', monospace; }
+
+
+    /* ============================================================
+      RESPONSIVE — Mobile adjustments
+    ============================================================ */
+    @media (max-width: 600px) {
+      .sidebar { display: none; }
+      .main    { margin-left: 0; }
+      .page    { padding: 24px 18px 60px; }
+      .blog-grid, .reading-grid, .tools-grid, .contact-grid { grid-template-columns: 1fr; }
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- ================================================================
+  SIDEBAR NAVIGATION
+  To add a new page:
+    1. Add a .nav-link here with data-page="your-page-id"
+    2. Add a matching <div class="page" id="page-your-page-id"> below
+================================================================ -->
+<nav class="sidebar">
+
+  <!-- Logo — clicking navigates to Home -->
+  <div class="sidebar-logo" onclick="navigate(&#39;home&#39;)" style="justify-content:center; border-bottom:none; padding-bottom:8px;">
+    <div class="logo-img" style="width:44px; height:32px; display:flex; align-items:center;">
+      <span class="logo-light"><svg width="100%" height="100%" viewBox="0 0 341 244" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M121.09 32.06L130.7 0L307.46 0.19C324.84 1.89 342.62 7.28 340 28.48C338.33 42.05 327.29 69.72 322.36 83.83C309.48 120.68 304.59 151.52 258.57 155.04C218.74 158.09 174.59 155.04 134.54 155C131.97 155.23 130.05 155.69 127.83 157.03L95.09 248.06H45.09L98.09 95.06H-2.91L8.25 57.72L10.57 56.04L242.49 56.15C247.7 56.9 249.57 59.09 249.04 64.44C248.72 67.72 241.97 87.12 240.08 89.55C237.4 93 234.01 94.68 229.64 95.11C204.7 97.51 176.59 92.3005 150.8 95.27C144.46 96 139.23 115.35 140.06 119.55C140.67 122.65 146.46 122.85 149.55 123.1C174.99 125.12 218.07 124.94 243.63 123.1C253.97 122.36 259.97 119.83 264.59 110.06C271.01 96.46 282.25 63.97 285.8 49.27C287.1 43.88 289.19 36.75 283.03 33.62C282.56 33.38 277.87 32.06 277.59 32.06H121.09Z" fill="#040404"></path>
+</svg></span>
+      <span class="logo-dark"><svg width="100%" height="100%" viewBox="0 0 341 244" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M121.09 32.06L130.7 0L307.46 0.19C324.84 1.89 342.62 7.28 340 28.48C338.33 42.05 327.29 69.72 322.36 83.83C309.48 120.68 304.59 151.52 258.57 155.04C218.74 158.09 174.59 155.04 134.54 155C131.97 155.23 130.05 155.69 127.83 157.03L95.09 248.06H45.09L98.09 95.06H-2.91L8.25 57.72L10.57 56.04L242.49 56.15C247.7 56.9 249.57 59.09 249.04 64.44C248.72 67.72 241.97 87.12 240.08 89.55C237.4 93 234.01 94.68 229.64 95.11C204.7 97.51 176.59 92.3005 150.8 95.27C144.46 96 139.23 115.35 140.06 119.55C140.67 122.65 146.46 122.85 149.55 123.1C174.99 125.12 218.07 124.94 243.63 123.1C253.97 122.36 259.97 119.83 264.59 110.06C271.01 96.46 282.25 63.97 285.8 49.27C287.1 43.88 289.19 36.75 283.03 33.62C282.56 33.38 277.87 32.06 277.59 32.06H121.09Z" fill="white"></path>
+</svg></span>
+    </div>
+  </div>
+
+  <!-- Main pages -->
+  <div class="nav-section">
+    <div class="nav-link active" data-page="home" onclick="navigate(&#39;home&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="6" height="6" rx="1.5"></rect><rect x="10" y="2" width="6" height="6" rx="1.5"></rect><rect x="2" y="10" width="6" height="6" rx="1.5"></rect><rect x="10" y="10" width="6" height="6" rx="1.5"></rect></svg>
+      Home <span class="nav-num">1</span>
+    </div>
+    <div class="nav-link" data-page="about" onclick="navigate(&#39;about&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="6" r="3"></circle><path d="M3 15c0-3.3 2.7-6 6-6s6 2.7 6 6"></path></svg>
+      About <span class="nav-num">2</span>
+    </div>
+    <div class="nav-link" data-page="projects" onclick="navigate(&#39;projects&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="14" height="12" rx="2"></rect><path d="M6 7h6M6 10.5h4"></path></svg>
+      Projects <span class="nav-num">3</span>
+    </div>
+    <div class="nav-link" data-page="testimonials" onclick="navigate(&#39;testimonials&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2l1.8 3.8 4.2.6-3 3 .7 4.2L9 11.4l-3.7 2.2.7-4.2-3-3 4.2-.6z"></path></svg>
+      Kind Words <span class="nav-num">4</span>
+    </div>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Resources</div>
+
+  <!-- Resource pages -->
+  <div class="nav-section">
+    <div class="nav-link" data-page="writing" onclick="navigate(&#39;writing&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2l3 3-9 9H4v-3L13 2z"></path></svg>
+      Writing <span class="nav-num">5</span>
+    </div>
+    <div class="nav-link" data-page="reading" onclick="navigate(&#39;reading&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h12M3 9h8M3 13h5"></path></svg>
+      Reading List <span class="nav-num">6</span>
+    </div>
+    <div class="nav-link" data-page="tools" onclick="navigate(&#39;tools&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="3"></circle><path d="M9 2v2M9 14v2M2 9h2M14 9h2"></path></svg>
+      Tools <span class="nav-num">7</span>
+    </div>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Connect</div>
+
+  <!-- Connect links -->
+  <div class="nav-section">
+    <div class="nav-link" data-page="contact" onclick="navigate(&#39;contact&#39;)">
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 2V4z"></path></svg>
+      Contact <span class="nav-num">9</span>
+    </div>
+    <a href="https://linkedin.com/" target="_blank" class="nav-link"><!-- ← Edit your LinkedIn URL -->
+      <svg class="nav-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="14" height="14" rx="3"></rect><path d="M5.5 7.5v5M5.5 5.5v.5M8.5 12.5v-3a1.5 1.5 0 013 0v3M8.5 7.5v5"></path></svg>
+      LinkedIn ↗
+    </a>
+  </div>
+
+  <!-- Theme switcher -->
+  <div class="theme-row">
+    <div class="theme-label">Theme</div>
+    <div class="theme-toggle">
+      <button class="theme-btn active" onclick="setTheme(&#39;light&#39;)">Light</button>
+      <button class="theme-btn" onclick="setTheme(&#39;dark&#39;)">Dark</button>
+      <button class="theme-btn" onclick="setTheme(&#39;auto&#39;)">Auto</button>
+    </div>
+  </div>
+
+</nav>
+
+
+<!-- ================================================================
+  MAIN CONTENT — Pages
+  Each page is a <div class="page" id="page-XXX">.
+  Only the one with class "active" is visible at a time.
+================================================================ -->
+<main class="main">
+
+
+  <!-- ============================================================
+    PAGE: HOME
+    Edit: greeting (auto time-based), hero subtitle, intro grid cells,
+          update cards, blog cards, reading items, tool items
+  ============================================================ -->
+  <div class="page active" id="page-home" style="">
+
+    <!-- Giant time-based greeting + subtitle -->
+    <div class="hero">
+      <h1 class="hero-greeting" id="greeting">Good afternoon</h1><!-- Updated by JS -->
+      <p class="hero-subtitle">
+        I'm <strong>Paige Townshend</strong> — a web designer &amp; retention marketer based in New York City. I build immersive, intuitive websites and design campaigns that keep audiences coming back — with a particular affinity for fashion, media, and storytelling through design. <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;about&#39;)">Learn more about me ↓</a>
+      </p>
+
+      <div class="home-intro-grid">
+        <div class="home-intro-col">
+          <div class="home-intro-cell">
+            Navigate quickly using keyboard shortcuts 1→0. Try pressing 2, 3, and 4.
+          </div>
+          <div class="home-intro-cell">
+            I'm a designer and retention marketer based in NYC — currently at <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;about&#39;)">Understood.org →</a>
+          </div>
+          <div class="home-intro-cell">
+            I love connecting — feel free to reach out
+            — <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;contact&#39;)">Get in touch →</a>
+          </div>
+        </div>
+        <div class="home-intro-col">
+          <div class="home-intro-cell">
+            I specialise in email strategy, audience segmentation, and lifecycle marketing that blends data with clear creative
+            — <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;about&#39;)">More about me →</a>
+          </div>
+          <div class="home-intro-cell">
+            I've freelanced across branding, web, and email for clients like zCap, Fin &amp; Tonic, and Beyond the Barn Doors
+            — <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;projects&#39;)">See projects →</a>
+          </div>
+        </div>
+        <div class="home-intro-col">
+          <div class="home-intro-cell">
+            Design should feel effortless — every visual choice should serve the user and tell a story
+            — <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;writing&#39;)">Read my writing →</a>
+          </div>
+          <div class="home-intro-cell">
+            Outside work I'm into fitness, snowboarding, golf, and fashion — and I bring that energy into everything I make
+          </div>
+          <div class="home-intro-cell">
+            I've worked with some great people
+            — <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigate(&#39;testimonials&#39;)">See kind words →</a>
+          </div>
+        </div>      </div>
+    </div>
+
+    <!-- Personal updates — 4 columns -->
+    <div class="home-section">
+      <div class="home-section-header">
+        <h2 class="home-section-title">Personal updates</h2>
+        <span class="home-view-all" onclick="navigate(&#39;about&#39;)">View All</span>
+      </div>
+      <div class="home-updates-grid">
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="home-update">
+          <div class="home-update-icon">💙</div>
+          <div class="home-update-title">Joined Understood.org</div>
+          <div class="home-update-desc">Moved in-house to lead retention marketing and email strategy at Understood — helping millions of families navigate learning and thinking differences.</div>
+          <div class="home-update-date">Sep 2024</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="home-update">
+          <div class="home-update-icon">📡</div>
+          <div class="home-update-title">Joined Mission Control Marketing</div>
+          <div class="home-update-desc">Landed my first agency role in NYC as a UX/UI designer — working across design, digital strategy, and client campaigns for a range of brands.</div>
+          <div class="home-update-date">Oct 2022</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="home-update">
+          <div class="home-update-icon">🎨</div>
+          <div class="home-update-title">Started freelancing as a digital designer</div>
+          <div class="home-update-desc">Started taking on freelance branding and web projects — delivering full rebrands, websites, brand books, and marketing assets for clients including zCap Investors and Beyond the Barn Doors.</div>
+          <div class="home-update-date">Jan 2023</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="home-update">
+          <div class="home-update-icon">💻</div>
+          <div class="home-update-title">UX Design Intern at Systemlink, Inc.</div>
+          <div class="home-update-desc">Worked with the engineering team to design and test software features for an organ pairing platform — conducting heuristic analysis, site mapping, and designing icons in Illustrator.</div>
+          <div class="home-update-date">Summer 2019</div>
+        </a>
+
+      </div><!-- end home-updates-grid -->
+    </div><!-- end home-section -->
+    <div class="home-section">
+      <div class="home-section-header">
+        <h2 class="home-section-title">Recent writing</h2>
+        <span class="home-view-all" onclick="navigate(&#39;writing&#39;)">View All</span>
+      </div>
+      <div class="home-grid-box">
+
+        <a onclick="navigate(&#39;article-1&#39;)" class="home-blog-card" style="cursor:pointer;">
+          <div class="home-blog-thumb-wrapper"><img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1460925895917-afdab827c52f" class="home-blog-thumb-placeholder" style="object-fit:cover;" alt="Retention Marketing"></div>
+          <div class="home-blog-body">
+            <div class="home-blog-title">Why Retention Marketing is the Most Underrated Growth Strategy</div>
+            <div class="home-blog-desc">Acquisition gets all the glory, but the real ROI is in keeping the customers you already have.</div>
+          </div>
+        </a>
+
+        <a onclick="navigate(&#39;article-2&#39;)" class="home-blog-card" style="cursor:pointer;">
+          <div class="home-blog-thumb-wrapper"><img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1596526131083-e8c633c948d2" class="home-blog-thumb-placeholder" style="object-fit:cover;" alt="Email Design"></div>
+          <div class="home-blog-body">
+            <div class="home-blog-title">Designing Emails People Actually Want to Open</div>
+            <div class="home-blog-desc">The intersection of design and copywriting is where email marketing lives or dies. Here's what I've learned building campaigns from scratch.</div>
+          </div>
+        </a>
+
+        <a onclick="navigate(&#39;article-3&#39;)" class="home-blog-card" style="cursor:pointer;">
+          <div class="home-blog-thumb-wrapper"><img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1558655146-d09347e92766" class="home-blog-thumb-placeholder" style="object-fit:cover;" alt="Design Systems"></div>
+          <div class="home-blog-body">
+            <div class="home-blog-title">How to Build a Design System for a Content-Heavy Website</div>
+            <div class="home-blog-desc">When every page needs to feel consistent but flexible, a solid design system isn't optional — it's the foundation.</div>
+          </div>
+        </a>
+
+        <a onclick="navigate(&#39;article-4&#39;)" class="home-blog-card" style="cursor:pointer;">
+          <div class="home-blog-thumb-wrapper"><img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1509631179647-0177331693ae" class="home-blog-thumb-placeholder" style="object-fit:cover;" alt="Fashion and Design"></div>
+          <div class="home-blog-body">
+            <div class="home-blog-title">What Fashion Taught Me About Web Design</div>
+            <div class="home-blog-desc">The best fashion communicates without words. Turns out, so does the best UX.</div>
+          </div>
+        </a>
+
+      </div><!-- end home-grid-box -->
+    </div><!-- end home-section -->
+
+    <!-- Reading list — 4 columns, minimal -->
+    <div class="home-section">
+      <div class="home-section-header">
+        <h2 class="home-section-title">Reading list</h2>
+        <span class="home-view-all" onclick="navigate(&#39;reading&#39;)">View All</span>
+      </div>
+      <div class="home-reading-grid">
+
+        <a href="https://reallygoodemails.com/" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Really Good Emails</div>
+            <div class="home-reading-tag">Marketing</div>
+          </div>
+        </a>
+
+        <a href="https://www.businessoffashion.com/" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(1)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Business of Fashion</div>
+            <div class="home-reading-tag">Fashion</div>
+          </div>
+        </a>
+
+        <a href="https://www.smashingmagazine.com/" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(2)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Smashing Magazine</div>
+            <div class="home-reading-tag">Design</div>
+          </div>
+        </a>
+
+        <a href="https://www.joshwcomeau.com/" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(3)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Josh W Comeau</div>
+            <div class="home-reading-tag">Design</div>
+          </div>
+        </a>
+
+        <a href="https://www.klaviyo.com/blog" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(4)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Klaviyo Blog</div>
+            <div class="home-reading-tag">Marketing</div>
+          </div>
+        </a>
+
+        <a href="https://www.awwwards.com/" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(5)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Awwwards</div>
+            <div class="home-reading-tag">Design</div>
+          </div>
+        </a>
+
+        <a href="https://www.voguebusiness.com/" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(6)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Vogue Business</div>
+            <div class="home-reading-tag">Fashion</div>
+          </div>
+        </a>
+
+        <a href="https://litmus.com/blog" target="_blank" class="home-reading-item">
+          <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(7)" class="home-reading-favicon" alt="">
+          <div class="home-reading-info">
+            <div class="home-reading-title">Litmus Blog</div>
+            <div class="home-reading-tag">Marketing</div>
+          </div>
+        </a>
+
+      </div><!-- end home-reading-grid -->
+    </div><!-- end home-section -->
+
+    <!-- Latest tools — 4 columns, minimal -->
+    <div class="home-section" style="padding-bottom: 48px;">
+      <div class="home-section-header">
+        <h2 class="home-section-title">Latest tools</h2>
+        <span class="home-view-all" onclick="navigate(&#39;tools&#39;)">View All</span>
+      </div>
+      <div class="home-tools-grid">
+
+        <!-- HOME TOOL ITEM — copy/paste to add more -->
+        <a href="https://chrome.google.com/webstore" target="_blank" class="home-tool-item">
+          <div class="home-tool-icon">🛡️</div>
+          <div class="home-tool-name">BlockSite: Focused Work Control</div>
+          <div class="home-tool-desc">Stay focused and improve your productivity. Easily block distracting websites that make you procrastinate on a timer.</div>
+        </a>
+
+        <a href="https://feedback.fish/" target="_blank" class="home-tool-item">
+          <div class="home-tool-icon">🐟</div>
+          <div class="home-tool-name">Feedback.fish</div>
+          <div class="home-tool-desc">The easiest, lightest feedback widget to embed into a website to gather valuable insight from your audience.</div>
+        </a>
+
+        <a href="https://ratiobuddy.com/" target="_blank" class="home-tool-item">
+          <div class="home-tool-icon">📐</div>
+          <div class="home-tool-name">Ratio Buddy</div>
+          <div class="home-tool-desc">CSS/SCSS image aspect ratio calculator using the padding bottom technique.</div>
+        </a>
+
+        <a href="https://technicalseo.com/tools/schema-markup-generator/" target="_blank" class="home-tool-item">
+          <div class="home-tool-icon">📋</div>
+          <div class="home-tool-name">Clean Schema Generator</div>
+          <div class="home-tool-desc">Multiple schema type generator to get you started without the need for coding. Simple fill out the fields and copy the code.</div>
+        </a>
+
+      </div><!-- end home-tools-grid -->
+    </div><!-- end home-section -->
+
+  </div><!-- end #page-home -->
+
+
+  <!-- ============================================================
+    PAGE: ABOUT — Paige Townshend
+  ============================================================ -->
+  <div class="page" id="page-about" style="">
+
+    <h1 style="font-family:&#39;Instrument Serif&#39;,serif; font-size:2rem; font-weight:400; margin-bottom:24px; letter-spacing:-0.02em;">About</h1>
+
+    <!-- Bio -->
+    <div class="about-bio">
+      I'm <strong>Paige Townshend</strong>, a web designer and retention marketer based in New York City.
+      I graduated from James Madison University — where I also completed a UX design internship at Systemlink, Inc. — before making the move to NYC to build my career at the intersection of design, strategy, and audience engagement.
+      <br><br>
+      I currently work at <a href="https://understood.org/" target="_blank">Understood.org</a>, where I lead retention marketing and email strategy — building campaigns that help families and educators connect with resources they need.
+      Before that, I was a UX/UI designer at <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" target="_blank">Mission Control Marketing</a>, working across education, ecommerce, nonprofits, and real estate with clients like Engel &amp; Völkers and Prevedere.
+      <br><br>
+      Alongside my full-time roles, I've been freelancing since 2023 — delivering multi-stage rebrands, websites, brand books, and marketing assets for clients including zCap Investors, Beyond the Barn Doors, and Fin &amp; Tonic. My freelance work spans everything from logo design and print collateral to digital campaigns and web graphics.
+      <br><br>
+      I approach design as a balance of purpose and experience — every visual choice should serve the user, tell a story, and feel effortless to navigate.
+      Outside of work, I'm passionate about fitness and outdoor adventure: running, snowboarding, and golf.
+    </div>
+
+    <!-- Personal updates -->
+    <div class="about-section">
+      <div class="about-section-title">Personal updates</div>
+      <div class="about-updates">
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="about-update">
+          <div class="about-update-icon">💙</div>
+          <div>
+            <div class="about-update-title">Joined Understood.org</div>
+            <div class="about-update-desc">Moved in-house to lead retention marketing and email strategy at Understood — a mission-driven org helping millions of families navigate learning and thinking differences.</div>
+          </div>
+          <div class="about-update-date">Sep 2024</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="about-update">
+          <div class="about-update-icon">📡</div>
+          <div>
+            <div class="about-update-title">Joined Mission Control Marketing</div>
+            <div class="about-update-desc">Landed my first agency role in NYC as a UX/UI designer — working across design, digital strategy, and client campaigns for brands across education, ecommerce, and real estate.</div>
+          </div>
+          <div class="about-update-date">Oct 2022</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="about-update">
+          <div class="about-update-icon">🗽</div>
+          <div>
+            <div class="about-update-title">Moved to New York City</div>
+            <div class="about-update-desc">Made the move to NYC to chase bigger opportunities. Took the leap and haven't looked back.</div>
+          </div>
+          <div class="about-update-date">Aug 2022</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="about-update">
+          <div class="about-update-icon">🎓</div>
+          <div>
+            <div class="about-update-title">Graduated from James Madison University</div>
+            <div class="about-update-desc">Closed a great chapter at JMU — studied design and marketing, left with a portfolio, a degree, and a lot of ambition.</div>
+          </div>
+          <div class="about-update-date">May 2022</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="about-update">
+          <div class="about-update-icon">🎨</div>
+          <div>
+            <div class="about-update-title">Started freelancing as a digital designer</div>
+            <div class="about-update-desc">Started taking on freelance branding and web projects — delivering full rebrands, websites, brand books, and marketing assets for clients including zCap Investors, Beyond the Barn Doors, and Fin &amp; Tonic.</div>
+          </div>
+          <div class="about-update-date">Jan 2023</div>
+        </a>
+
+        <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="about-update">
+          <div class="about-update-icon">💻</div>
+          <div>
+            <div class="about-update-title">UX Design Intern at Systemlink, Inc.</div>
+            <div class="about-update-desc">Worked with the engineering team to design and test software features for an organ pairing platform — conducting heuristic analysis, site mapping, and designing icons in Adobe Illustrator.</div>
+          </div>
+          <div class="about-update-date">Summer 2019</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Tech stack -->
+    <div class="about-section">
+      <div class="about-section-title">Tools &amp; stack</div>
+      <p class="about-stack-desc">
+        The tools I reach for across design, marketing, and development.
+        I'm always learning — and always looking for better ways to work.
+      </p>
+      <div class="stack-row">
+        <span class="stack-label">Design</span>
+        <div class="stack-icons">
+          <div class="stack-icon" title="Figma"><img src="./Paige Townshend _ Designer &amp; Developer_files/figma" alt="Figma" title="Figma" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Webflow"><img src="./Paige Townshend _ Designer &amp; Developer_files/4353FF" alt="Webflow" title="Webflow" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Adobe Creative Suite"><img src="./Paige Townshend _ Designer &amp; Developer_files/FF0000" alt="Adobe" title="Adobe" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="WordPress"><img src="./Paige Townshend _ Designer &amp; Developer_files/21759B" alt="WordPress" title="WordPress" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Shopify"><img src="./Paige Townshend _ Designer &amp; Developer_files/96BF48" alt="Shopify" title="Shopify" style="width:26px;height:26px;object-fit:contain;"></div>
+        </div>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Marketing</span>
+        <div class="stack-icons">
+          <div class="stack-icon" title="Iterable"><img src="./Paige Townshend _ Designer &amp; Developer_files/6F5CE6" alt="Iterable" title="Iterable" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Klaviyo"><img src="./Paige Townshend _ Designer &amp; Developer_files/000000" alt="Klaviyo" title="Klaviyo" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="ActiveCampaign"><img src="./Paige Townshend _ Designer &amp; Developer_files/356AE6" alt="ActiveCampaign" title="ActiveCampaign" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Google Analytics"><img src="./Paige Townshend _ Designer &amp; Developer_files/E37400" alt="Google Analytics" title="Google Analytics" style="width:26px;height:26px;object-fit:contain;"></div>
+        </div>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Development</span>
+        <div class="stack-icons">
+          <div class="stack-icon" title="HTML5"><img src="./Paige Townshend _ Designer &amp; Developer_files/E34F26" alt="HTML5" title="HTML5" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="CSS3"><img src="./Paige Townshend _ Designer &amp; Developer_files/1572B6" alt="CSS3" title="CSS3" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="JavaScript"><img src="./Paige Townshend _ Designer &amp; Developer_files/F7DF1E" alt="JavaScript" title="JavaScript" style="width:26px;height:26px;object-fit:contain;"></div>
+        </div>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Productivity</span>
+        <div class="stack-icons">
+          <div class="stack-icon" title="Notion"><img src="./Paige Townshend _ Designer &amp; Developer_files/000000(1)" alt="Notion" title="Notion" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Airtable"><img src="./Paige Townshend _ Designer &amp; Developer_files/18BFFF" alt="Airtable" title="Airtable" style="width:26px;height:26px;object-fit:contain;"></div>
+          <div class="stack-icon" title="Jira"><img src="./Paige Townshend _ Designer &amp; Developer_files/0052CC" alt="Jira" title="Jira" style="width:26px;height:26px;object-fit:contain;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Career timeline -->
+    <div class="about-section">
+      <div class="about-section-title">Career</div>
+      <p class="about-stack-desc">
+        A brief summary of where I've worked. To see more, visit my
+        <a href="https://www.linkedin.com/in/paige-townshend/" target="_blank" style="color:var(--link); border-bottom:1px solid currentColor;">LinkedIn profile →</a>
+      </p>
+      <div class="career-list">
+
+        <div class="career-item">
+          <div class="career-years">2024–Now</div>
+          <div>
+            <div class="career-role">Retention Marketing Specialist</div>
+            <div class="career-company">Understood.org</div>
+            <div class="career-desc">Leading email strategy, automation, and audience segmentation to help families and educators connect with resources for learning and thinking differences. Key projects include Through My Eyes (TME) and TYCE 2.0 platform launches.</div>
+          </div>
+        </div>
+
+        <div class="career-item">
+          <div class="career-years">2022–2024</div>
+          <div>
+            <div class="career-role">UX/UI Designer</div>
+            <div class="career-company">Mission Control Marketing</div>
+            <div class="career-desc">Designed digital experiences and marketing assets for a range of clients across education, ecommerce, nonprofits, and real estate — including Engel &amp; Völkers and Prevedere.</div>
+          </div>
+        </div>
+
+        <div class="career-item">
+          <div class="career-years">2023–Present</div>
+          <div>
+            <div class="career-role">Freelance Digital Designer</div>
+            <div class="career-company">Independent</div>
+            <div class="career-desc">Multi-stage rebrands, websites, brand books, and marketing assets for clients including zCap Investors, Beyond the Barn Doors, and Fin &amp; Tonic. Work spans logo design, print collateral, digital campaigns, and web graphics.</div>
+          </div>
+        </div>
+
+        <div class="career-item">
+          <div class="career-years">Summer 2019 &amp; 2020</div>
+          <div>
+            <div class="career-role">UX Design Intern</div>
+            <div class="career-company">Systemlink, Inc. — Reston, VA</div>
+            <div class="career-desc">Designed and tested software features for an organ pairing platform. Conducted full heuristic analysis, site mapping, and information architecture review. Designed icons and graphics in Adobe Illustrator.</div>
+          </div>
+        </div>
+
+        <div class="career-item">
+          <div class="career-years">2018–2022</div>
+          <div>
+            <div class="career-role">BA Design &amp; Marketing</div>
+            <div class="career-company">James Madison University</div>
+            <div class="career-desc">Studied the intersection of visual design and marketing strategy. Built a portfolio spanning brand identity, digital campaigns, and UX work.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- How this site was made -->
+    <div class="about-section">
+      <div class="about-section-title">How this site was made</div>
+      <div class="about-made-text">
+        <p>
+          This site was built as a personal challenge — to go beyond design tools and build something fully from code.
+          It was inspired by the work of designer <a href="https://adamdurrant.co.uk/" target="_blank">Adam Durrant</a>, whose portfolio became the design reference I worked from.
+        </p>
+        <p>The goals were:</p>
+        <ol>
+          <li>To push my skills beyond design into real frontend development.</li>
+          <li>To have a living portfolio that reflects who I am and how I think.</li>
+          <li>To stay accountable to writing, sharing, and making more.</li>
+          <li>To prove that a great personal site doesn't need a framework — just intention.</li>
+        </ol>
+        <p>
+          The site is a single HTML file — no frameworks, no build step, no CMS.
+          Just HTML, CSS, and a small amount of JavaScript.
+        </p>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="about-section">
+      <div class="about-section-title">Contact</div>
+      <div class="about-contact-grid">
+
+        <div class="about-contact-row">
+          <span class="about-contact-label">Name</span>
+          <span class="about-contact-value">Paige Townshend</span>
+          <span class="about-contact-action"></span>
+        </div>
+
+        <div class="about-contact-row">
+          <span class="about-contact-label">Email</span>
+          <span class="about-contact-value"><a href="file:///cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bbcbd6cfd4ccd5c8d3ded5dffbdcd6dad2d795d8d4d6">[email&nbsp;protected]</a></span>
+          <span class="about-contact-action">
+            <a href="file:///cdn-cgi/l/email-protection#9eeef3eaf1e9f0edf6fbf0fadef9f3fff7f2b0fdf1f3">Compose</a> · <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" onclick="navigator.clipboard.writeText(&#39;pmtownshend@gmail.com&#39;)">Copy</a>
+          </span>
+        </div>
+
+        <div class="about-contact-row">
+          <span class="about-contact-label">Stay in touch</span>
+          <span class="about-contact-value">
+            <div class="social-links">
+              <a href="https://www.linkedin.com/in/paige-townshend/" target="_blank" class="social-link">LinkedIn</a>
+            </div>
+          </span>
+          <span class="about-contact-action"></span>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end #page-about -->
+
+
+  <!-- ============================================================
+    PAGE: PROJECTS
+    Edit: each project card — icon, name, tag, description, link
+  ============================================================ -->
+  <div class="page" id="page-projects" style="">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Projects</div>
+      <h1 class="page-title">Things I've worked on</h1>
+      <p class="page-desc">A selection of work spanning brand identity, web design, and retention marketing.</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="project-card">
+        <div class="project-image" style="background: linear-gradient(135deg, #1a1a2e, #16213e); font-size:3rem;">🏦</div>
+        <div class="project-body">
+          <div class="project-name">ZCAP Investment Firm</div>
+          <div class="project-desc">Logo design and full website build for ZCAP, a private investment firm. Focused on creating a clean, credible visual identity that conveys trust and professionalism.</div>
+          <div class="project-meta">
+            <span class="project-tag">Branding</span>
+            <span class="project-tag">Web Design</span>
+            <span class="project-tag">Freelance</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="project-card">
+        <div class="project-image" style="background: linear-gradient(135deg, #e8d5c4, #c4a882); font-size:3rem;">🐴</div>
+        <div class="project-body">
+          <div class="project-name">Beyond the Barn Doors</div>
+          <div class="project-desc">Complete brand identity and website for Beyond the Barn Doors — a lifestyle brand rooted in equestrian culture. Designed to feel warm, editorial, and distinctly personal.</div>
+          <div class="project-meta">
+            <span class="project-tag">Branding</span>
+            <span class="project-tag">Web Design</span>
+            <span class="project-tag">Freelance</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="project-card">
+        <div class="project-image" style="background: linear-gradient(135deg, #0a3d62, #1e6fa8); font-size:3rem;">⛵</div>
+        <div class="project-body">
+          <div class="project-name">Fin &amp; Tonic</div>
+          <div class="project-desc">Website design for Fin &amp; Tonic, a boat design brand. Built around a nautical aesthetic with a modern, approachable feel — balancing lifestyle appeal with product clarity.</div>
+          <div class="project-meta">
+            <span class="project-tag">Web Design</span>
+            <span class="project-tag">Freelance</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="project-card">
+        <div class="project-image" style="background: linear-gradient(135deg, #1a3a5c, #2d6a9f); font-size:3rem;">💙</div>
+        <div class="project-body">
+          <div class="project-name">Understood.org — Through My Eyes Launch</div>
+          <div class="project-desc">Phased launch strategy and email automation series for Understood's Through My Eyes platform — targeting educator and family audiences with personalized, segmented campaigns.</div>
+          <div class="project-meta">
+            <span class="project-tag">Email</span>
+            <span class="project-tag">Retention Marketing</span>
+            <span class="project-tag">Understood.org</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="file:///Users/paigetownshendmacbookpro.local/Downloads/portfolio_77.html#" class="project-card">
+        <div class="project-image" style="background: linear-gradient(135deg, #2c3e50, #4a6fa5); font-size:3rem;">📧</div>
+        <div class="project-body">
+          <div class="project-name">Understood.org — Re-engagement Campaigns</div>
+          <div class="project-desc">Designed and executed re-engagement campaigns targeting families inactive for 4+ months. Iterative subject line testing and audience segmentation drove measurable improvements in open and click rates.</div>
+          <div class="project-meta">
+            <span class="project-tag">Email</span>
+            <span class="project-tag">Retention Marketing</span>
+            <span class="project-tag">Understood.org</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+  </div><!-- end #page-projects -->
+
+
+  <!-- ============================================================
+    PAGE: KIND WORDS (Testimonials)
+    Edit: each testimonial — quote, name, role
+  ============================================================ -->
+  <div class="page" id="page-testimonials" style="">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Kind Words</div>
+      <h1 class="page-title">What people say</h1>
+      <p class="page-desc">Feedback from people I've worked with, built for, and learned alongside.</p>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <!-- TESTIMONIAL — copy/paste this block to add more -->
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Working with Your Name was genuinely one of the best experiences I've had with a developer. They understand the full picture — design, code, and user experience.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">👩‍💼</div>
+          <div>
+            <div class="author-name">Sarah Chen</div><!-- ↑ Edit name -->
+            <div class="author-role">Product Manager, Acme Co.</div><!-- ↑ Edit role -->
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">The code was clean, the delivery was on time, and the final product exceeded what we spec'd out. Would work with them again in a heartbeat.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">👨‍💻</div>
+          <div>
+            <div class="author-name">James Rivera</div>
+            <div class="author-role">CTO, StartupXYZ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">They have a rare ability to translate vague ideas into something concrete and beautiful without needing to be hand-held. A true senior-level collaborator.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">🎨</div>
+          <div>
+            <div class="author-name">Maya Patel</div>
+            <div class="author-role">Lead Designer, Studio North</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">I've hired a lot of freelancers over the years. Your Name is one of the very few I'd call back for every project without hesitation.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">🏢</div>
+          <div>
+            <div class="author-name">Tom Weller</div>
+            <div class="author-role">Founder, GrowthLab</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- end #page-testimonials -->
+
+
+  <!-- ============================================================
+    PAGE: WRITING
+    Edit: each blog card — emoji, title, description, link
+  ============================================================ -->
+  <div class="page" id="page-writing" style="">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Writing</div>
+      <h1 class="page-title">Articles &amp; posts</h1>
+      <p class="page-desc">I write about design, retention marketing, and the intersection of creativity and strategy.</p>
+    </div>
+
+    <div class="blog-grid">
+
+      <a onclick="navigate(&#39;article-1&#39;)" class="blog-card" style="cursor:pointer;">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1460925895917-afdab827c52f" class="blog-thumb-placeholder" style="object-fit:cover;" alt="Retention Marketing">
+        <div class="blog-body">
+          <div class="blog-title"><span>Why Retention Marketing is the Most Underrated Growth Strategy</span><span>↗</span></div>
+          <div class="blog-desc">Acquisition gets all the glory, but the real ROI is in keeping the customers you already have.</div>
+        </div>
+      </a>
+
+      <a onclick="navigate(&#39;article-2&#39;)" class="blog-card" style="cursor:pointer;">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1596526131083-e8c633c948d2" class="blog-thumb-placeholder" style="object-fit:cover;" alt="Email Design">
+        <div class="blog-body">
+          <div class="blog-title"><span>Designing Emails People Actually Want to Open</span><span>↗</span></div>
+          <div class="blog-desc">The intersection of design and copywriting is where email marketing lives or dies.</div>
+        </div>
+      </a>
+
+      <a onclick="navigate(&#39;article-3&#39;)" class="blog-card" style="cursor:pointer;">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1558655146-d09347e92766" class="blog-thumb-placeholder" style="object-fit:cover;" alt="Design Systems">
+        <div class="blog-body">
+          <div class="blog-title"><span>How to Build a Design System for a Content-Heavy Website</span><span>↗</span></div>
+          <div class="blog-desc">When every page needs to feel consistent but flexible, a solid design system isn't optional — it's the foundation.</div>
+        </div>
+      </a>
+
+      <a onclick="navigate(&#39;article-4&#39;)" class="blog-card" style="cursor:pointer;">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/photo-1509631179647-0177331693ae" class="blog-thumb-placeholder" style="object-fit:cover;" alt="Fashion and Design">
+        <div class="blog-body">
+          <div class="blog-title"><span>What Fashion Taught Me About Web Design</span><span>↗</span></div>
+          <div class="blog-desc">The best fashion communicates without words. Turns out, so does the best UX.</div>
+        </div>
+      </a>
+
+    </div>
+
+  </div><!-- end #page-writing -->
+
+
+  <!-- ============================================================
+    PAGE: READING LIST
+    Edit: each link — URL, favicon URL, title, tag
+    Favicon tip: replace the domain in the favicon src URL
+  ============================================================ -->
+  <div class="page" id="page-reading" style="">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Reading List</div>
+      <h1 class="page-title">What I'm reading</h1>
+      <p class="page-desc">Sites, blogs, and newsletters I keep coming back to across fashion, marketing, and design.</p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="reading-filters">
+      <button class="reading-filter-btn active" onclick="filterReading(&#39;all&#39;, this)">All</button>
+      <button class="reading-filter-btn" onclick="filterReading(&#39;Marketing&#39;, this)">Marketing</button>
+      <button class="reading-filter-btn" onclick="filterReading(&#39;Fashion&#39;, this)">Fashion</button>
+      <button class="reading-filter-btn" onclick="filterReading(&#39;Design&#39;, this)">Design</button>
+      <button class="reading-filter-btn" onclick="filterReading(&#39;Culture&#39;, this)">Culture</button>
+    </div>
+
+    <div class="reading-grid" id="reading-grid">
+
+      <a href="https://reallygoodemails.com/" target="_blank" class="reading-card" data-tag="Marketing">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Really Good Emails</div>
+          <div class="reading-url">reallygoodemails.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Marketing</span></div>
+      </a>
+
+      <a href="https://www.klaviyo.com/blog" target="_blank" class="reading-card" data-tag="Marketing">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(8)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Klaviyo Blog</div>
+          <div class="reading-url">klaviyo.com/blog</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Marketing</span></div>
+      </a>
+
+      <a href="https://litmus.com/blog" target="_blank" class="reading-card" data-tag="Marketing">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(7)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Litmus Blog</div>
+          <div class="reading-url">litmus.com/blog</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Marketing</span></div>
+      </a>
+
+      <a href="https://www.businessoffashion.com/" target="_blank" class="reading-card" data-tag="Fashion">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(9)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Business of Fashion</div>
+          <div class="reading-url">businessoffashion.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Fashion</span></div>
+      </a>
+
+      <a href="https://www.voguebusiness.com/" target="_blank" class="reading-card" data-tag="Fashion">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(10)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Vogue Business</div>
+          <div class="reading-url">voguebusiness.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Fashion</span></div>
+      </a>
+
+      <a href="https://www.highsnobiety.com/" target="_blank" class="reading-card" data-tag="Fashion">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(11)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Highsnobiety</div>
+          <div class="reading-url">highsnobiety.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Fashion</span></div>
+      </a>
+
+      <a href="https://www.smashingmagazine.com/" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(12)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Smashing Magazine</div>
+          <div class="reading-url">smashingmagazine.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+      <a href="https://www.joshwcomeau.com/" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(13)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Josh W Comeau</div>
+          <div class="reading-url">joshwcomeau.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+      <a href="https://www.awwwards.com/" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(14)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Awwwards</div>
+          <div class="reading-url">awwwards.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+      <a href="https://tympanus.net/codrops" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(15)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Codrops</div>
+          <div class="reading-url">tympanus.net/codrops</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+      <a href="https://www.morningbrew.com/" target="_blank" class="reading-card" data-tag="Marketing">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(16)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Morning Brew</div>
+          <div class="reading-url">morningbrew.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Marketing</span></div>
+      </a>
+
+      <a href="https://annhandley.com/articles" target="_blank" class="reading-card" data-tag="Marketing">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(17)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Ann Handley</div>
+          <div class="reading-url">annhandley.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Marketing</span></div>
+      </a>
+
+      <a href="https://www.dazeddigital.com/" target="_blank" class="reading-card" data-tag="Fashion">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(18)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Dazed</div>
+          <div class="reading-url">dazeddigital.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Fashion</span></div>
+      </a>
+
+      <a href="https://i-d.vice.com/" target="_blank" class="reading-card" data-tag="Fashion">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(19)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">i-D Magazine</div>
+          <div class="reading-url">i-d.vice.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Fashion</span></div>
+      </a>
+
+      <a href="https://www.ssense.com/en-us/editorial" target="_blank" class="reading-card" data-tag="Fashion">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(20)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">SSENSE Editorial</div>
+          <div class="reading-url">ssense.com/editorial</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Fashion</span></div>
+      </a>
+
+      <a href="https://www.itsnicethat.com/" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(21)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">It's Nice That</div>
+          <div class="reading-url">itsnicethat.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+      <a href="https://fontsinuse.com/" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(22)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Fonts In Use</div>
+          <div class="reading-url">fontsinuse.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+      <a href="https://www.thecut.com/" target="_blank" class="reading-card" data-tag="Culture">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(23)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">The Cut</div>
+          <div class="reading-url">thecut.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Culture</span></div>
+      </a>
+
+      <a href="https://dirt.fyi/" target="_blank" class="reading-card" data-tag="Culture">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(24)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Dirt</div>
+          <div class="reading-url">dirt.fyi</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Culture</span></div>
+      </a>
+
+      <a href="https://nesslabs.com/" target="_blank" class="reading-card" data-tag="Culture">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(25)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Ness Labs</div>
+          <div class="reading-url">nesslabs.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Culture</span></div>
+      </a>
+
+      <a href="https://www.densediscovery.com/" target="_blank" class="reading-card" data-tag="Design">
+        <img src="./Paige Townshend _ Designer &amp; Developer_files/favicons(26)" class="reading-favicon" alt="">
+        <div class="reading-info">
+          <div class="reading-title">Dense Discovery</div>
+          <div class="reading-url">densediscovery.com</div>
+        </div>
+        <div class="reading-tags"><span class="reading-tag">Design</span></div>
+      </a>
+
+    </div>
+
+  </div><!-- end #page-reading -->
+
+
+  <!-- ============================================================
+    PAGE: TOOLS
+    Edit: each tool card — emoji, name, description, link
+  ============================================================ -->
+  <div class="page" id="page-tools">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Tools</div>
+      <h1 class="page-title">My toolkit</h1>
+      <p class="page-desc">Apps, extensions, and services I reach for constantly.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- TOOL CARD — copy/paste this block to add more -->
+      <a href="https://arc.net/" target="_blank" class="tool-card">
+        <div class="tool-icon-placeholder">🌐</div>
+        <div>
+          <div class="tool-name">Arc Browser ↗</div>
+          <div class="tool-desc">A reimagined browser that organizes your tabs and spaces intelligently.</div>
+        </div>
+      </a>
+
+      <a href="https://linear.app/" target="_blank" class="tool-card">
+        <div class="tool-icon-placeholder">📋</div>
+        <div>
+          <div class="tool-name">Linear ↗</div>
+          <div class="tool-desc">The issue tracker that doesn't get in your way. Fast, beautiful, purpose-built for dev teams.</div>
+        </div>
+      </a>
+
+      <a href="https://ray.so/" target="_blank" class="tool-card">
+        <div class="tool-icon-placeholder">✨</div>
+        <div>
+          <div class="tool-name">Ray.so ↗</div>
+          <div class="tool-desc">Beautiful code snippet screenshots in seconds. Great for sharing on social.</div>
+        </div>
+      </a>
+
+      <a href="https://www.figma.com/" target="_blank" class="tool-card">
+        <div class="tool-icon-placeholder">🎨</div>
+        <div>
+          <div class="tool-name">Figma ↗</div>
+          <div class="tool-desc">The industry standard for UI design and prototyping. I use it daily.</div>
+        </div>
+      </a>
+
+      <a href="https://warp.dev/" target="_blank" class="tool-card">
+        <div class="tool-icon-placeholder">💻</div>
+        <div>
+          <div class="tool-name">Warp Terminal ↗</div>
+          <div class="tool-desc">A modern terminal with AI-powered command search and IDE-like editing.</div>
+        </div>
+      </a>
+
+      <a href="https://www.notion.so/" target="_blank" class="tool-card">
+        <div class="tool-icon-placeholder">📝</div>
+        <div>
+          <div class="tool-name">Notion ↗</div>
+          <div class="tool-desc">My second brain — notes, docs, projects, and reading lists all in one place.</div>
+        </div>
+      </a>
+
+    </div>
+
+  </div><!-- end #page-tools -->
+
+
+  <!-- ============================================================
+    PAGE: CONTACT
+    Edit: email, social links, note text
+  ============================================================ -->
+  <div class="page" id="page-contact">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Contact</div>
+      <h1 class="page-title">Get in touch</h1>
+      <p class="page-desc">I'm always open to interesting conversations, collaborations, or just a friendly hello.</p>
+    </div>
+
+    <div class="contact-grid">
+
+      <!-- CONTACT CARD — copy/paste this block to add more -->
+      <a href="file:///cdn-cgi/l/email-protection#29414c4545466950465c5b4748444c074a4644" class="contact-card"><!-- ↑ Edit email -->
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-handle"><span class="__cf_email__" data-cfemail="83ebe6efefecc3faecf6f1ede2eee6ade0ecee">[email&nbsp;protected]</span></div><!-- ↑ Edit -->
+        </div>
+      </a>
+
+      <a href="https://linkedin.com/in/yourname" target="_blank" class="contact-card"><!-- ↑ Edit URL -->
+        <div class="contact-icon">💼</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-handle">/in/yourname</div><!-- ↑ Edit -->
+        </div>
+      </a>
+
+      <a href="https://github.com/yourname" target="_blank" class="contact-card"><!-- ↑ Edit URL -->
+        <div class="contact-icon">🐙</div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-handle">@yourname</div><!-- ↑ Edit -->
+        </div>
+      </a>
+
+      <a href="https://twitter.com/yourname" target="_blank" class="contact-card"><!-- ↑ Edit URL -->
+        <div class="contact-icon">🐦</div>
+        <div>
+          <div class="contact-label">Twitter / X</div>
+          <div class="contact-handle">@yourname</div><!-- ↑ Edit -->
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Note below contact cards -->
+    <div style="padding:20px; background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); max-width:480px;">
+      <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.65;">
+        The best way to reach me is via email. I try to respond to everything within a few days.
+      </p>
+    </div>
+
+  </div><!-- end #page-contact -->
+
+
+  <!-- ARTICLE 1 -->
+  <div class="page" id="page-article-1">
+    <div class="article-breadcrumb"><a onclick="navigate(&#39;writing&#39;)">Writing</a> <span>›</span> Why Retention Marketing is the Most Underrated Growth Strategy</div>
+    <div class="article-wrap">
+      <div class="article-main">
+        <div class="article-read-time">5 minute read</div>
+        <h1 class="article-title">Why Retention Marketing is the Most Underrated Growth Strategy</h1>
+        <p class="article-intro">Acquisition gets all the glory, but the real ROI is in keeping the customers you already have. Here's how I think about retention.</p>
+        <hr class="article-divider">
+        <div class="article-body">
+          <p>Everyone talks about acquisition. Ad spend, CAC, top-of-funnel growth — it dominates marketing conversations. But the brands quietly winning? They're obsessed with the customers they already have.</p>
+          <p>Retention marketing is the practice of keeping existing customers engaged, loyal, and coming back. And while it doesn't get the flashy headlines, the numbers speak for themselves — it costs 5x more to acquire a new customer than to retain an existing one, and increasing retention rates by just 5% can increase profits by 25–95%.</p>
+          <h2>Start with the relationship, not the sale</h2>
+          <p>The biggest mistake I see brands make is treating retention like a series of discounts and re-engagement blasts. Real retention is built on genuine value — content that helps, experiences that delight, and communication that feels human rather than automated.</p>
+          <h2>Segmentation is everything</h2>
+          <p>A one-size-fits-all email to your entire list is a missed opportunity. The brands doing retention well are sending the right message to the right person at the right time. That means understanding your audience deeply — their behaviors, their needs, and where they are in their journey with you.</p>
+          <h2>Design and copy are inseparable</h2>
+          <p>Retention marketing lives in the inbox, and in the inbox, you have about two seconds to earn someone's attention. That means your design needs to communicate instantly, and your copy needs to pull them in from the subject line down. Neither can carry the other — they have to work together.</p>
+          <h2>The long game</h2>
+          <p>Retention isn't a campaign. It's a commitment. The brands that win long-term are the ones that treat every touchpoint — every email, every notification, every piece of content — as an opportunity to strengthen the relationship.</p>
+          <p>If you're pouring budget into acquisition while neglecting the audience you already have, it's time to rebalance. The most sustainable growth strategy isn't finding new customers. It's making the ones you have never want to leave.</p>
+        </div>
+      </div>
+      <div class="article-sidebar">
+        <div class="article-author-avatar">🧠</div>
+        <div class="article-author-name">Paige Townshend</div>
+        <div class="article-author-handle">@paigetownshend</div>
+        <div class="article-published-label">Published</div>
+        <div class="article-published-date">March 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE 2 -->
+  <div class="page" id="page-article-2">
+    <div class="article-breadcrumb"><a onclick="navigate(&#39;writing&#39;)">Writing</a> <span>›</span> Designing Emails People Actually Want to Open</div>
+    <div class="article-wrap">
+      <div class="article-main">
+        <div class="article-read-time">4 minute read</div>
+        <h1 class="article-title">Designing Emails People Actually Want to Open</h1>
+        <p class="article-intro">The intersection of design and copywriting is where email marketing lives or dies. Here's what I've learned building campaigns from scratch.</p>
+        <hr class="article-divider">
+        <div class="article-body">
+          <p>The inbox is one of the most competitive spaces in digital marketing. Everyone's fighting for attention, and most emails lose before they're even opened. After building campaigns from scratch and obsessing over what actually works, here's what I've learned.</p>
+          <h2>The subject line is the design</h2>
+          <p>Most people think email design starts when you open the email. It doesn't. It starts in the inbox preview — subject line, preheader, sender name. These three elements are your first and most important design decisions. They need to create enough curiosity or value that opening feels like the obvious next move.</p>
+          <h2>Hierarchy over decoration</h2>
+          <p>Beautiful emails that bury the point are beautiful failures. Every email needs one clear hierarchy — a single most-important thing the reader should see, understand, and do. Everything else supports that. Decorative elements that don't serve the message are just noise.</p>
+          <h2>Design for the skim</h2>
+          <p>Nobody reads emails. They scan them. That means your design needs to communicate the core message even if someone only spends three seconds on it. Bold headers, short paragraphs, clear CTAs, and intentional white space aren't nice-to-haves — they're the whole game.</p>
+          <h2>Mobile is non-negotiable</h2>
+          <p>Over 60% of emails are opened on mobile. If your email isn't designed mobile-first, you're designing for a minority of your audience. Single-column layouts, large tap targets, and concise copy aren't limitations — they're constraints that make your design better.</p>
+          <h2>Test everything, assume nothing</h2>
+          <p>The best email designers I know are obsessed with testing. Subject lines, send times, CTA copy, button color, layout — everything is a hypothesis until the data says otherwise. Intuition gets you to a good starting point. Testing gets you to great.</p>
+          <p>The inbox rewards clarity, consistency, and genuine value. Design emails that respect your reader's time and they'll keep opening them. That's the whole secret.</p>
+        </div>
+      </div>
+      <div class="article-sidebar">
+        <div class="article-author-avatar">🧠</div>
+        <div class="article-author-name">Paige Townshend</div>
+        <div class="article-author-handle">@paigetownshend</div>
+        <div class="article-published-label">Published</div>
+        <div class="article-published-date">February 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE 3 -->
+  <div class="page" id="page-article-3">
+    <div class="article-breadcrumb"><a onclick="navigate(&#39;writing&#39;)">Writing</a> <span>›</span> How to Build a Design System for a Content-Heavy Website</div>
+    <div class="article-wrap">
+      <div class="article-main">
+        <div class="article-read-time">5 minute read</div>
+        <h1 class="article-title">How to Build a Design System for a Content-Heavy Website</h1>
+        <p class="article-intro">When every page needs to feel consistent but flexible, a solid design system isn't optional — it's the foundation everything else is built on.</p>
+        <hr class="article-divider">
+        <div class="article-body">
+          <p>When you're designing a website that needs to scale — one with dozens of page templates, hundreds of content types, and a team of people touching it — winging it isn't an option. A design system isn't a luxury. It's the foundation everything else is built on.</p>
+          <h2>Start with an audit, not a blank canvas</h2>
+          <p>Before you design a single new component, document what already exists. What patterns are recurring? What's inconsistent? What's working and what isn't? A good design system doesn't reinvent — it codifies, cleans up, and creates clarity from what's already there.</p>
+          <h2>Tokens first</h2>
+          <p>Design tokens are the DNA of your system — your colors, typography scale, spacing units, border radii, shadows. Get these right before you touch a single component. Every decision downstream flows from these. When your tokens are solid, consistency becomes automatic.</p>
+          <h2>Components should be flexible, not fragile</h2>
+          <p>The best components are built to handle real content — long headlines, short headlines, missing images, extra copy. Design for the edge cases, not just the perfect comp. A card component that breaks when the title runs to three lines isn't a component, it's a liability.</p>
+          <h2>Documentation is part of the design</h2>
+          <p>A design system nobody knows how to use is just a Figma file collecting dust. Every component needs clear usage guidelines — when to use it, when not to, what variants exist, and why. The best systems are self-explanatory, but the great ones are also well documented.</p>
+          <h2>It's never finished</h2>
+          <p>A design system is a living document. As the product evolves, the system evolves with it. The goal isn't perfection on day one — it's building something stable enough to ship from and flexible enough to grow with. Treat it like a product, not a project.</p>
+          <p>For content-heavy sites especially, a strong design system is what lets you move fast without breaking things. It's the difference between a site that scales gracefully and one that becomes impossible to maintain.</p>
+        </div>
+      </div>
+      <div class="article-sidebar">
+        <div class="article-author-avatar">🧠</div>
+        <div class="article-author-name">Paige Townshend</div>
+        <div class="article-author-handle">@paigetownshend</div>
+        <div class="article-published-label">Published</div>
+        <div class="article-published-date">January 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE 4 -->
+  <div class="page" id="page-article-4">
+    <div class="article-breadcrumb"><a onclick="navigate(&#39;writing&#39;)">Writing</a> <span>›</span> What Fashion Taught Me About Web Design</div>
+    <div class="article-wrap">
+      <div class="article-main">
+        <div class="article-read-time">5 minute read</div>
+        <h1 class="article-title">What Fashion Taught Me About Web Design</h1>
+        <p class="article-intro">The best fashion communicates without words. Turns out, so does the best UX.</p>
+        <hr class="article-divider">
+        <div class="article-body">
+          <p>I've always been drawn to fashion. Not just as a consumer, but as a student of how it communicates — how a single silhouette can tell a story, how a color palette can set a mood, how the best collections make you feel something before you've read a single word. The more I've worked in web design, the more I've realized the two disciplines are speaking the same language.</p>
+          <h2>Silence is a design choice</h2>
+          <p>The best fashion designers understand negative space. A stark, minimal runway look commands attention precisely because of what's been left out. Web design works the same way. White space isn't empty — it's breathing room. It gives the eye somewhere to rest and the important elements room to land. Crowded pages, like overcrowded looks, exhaust the viewer before they've taken anything in.</p>
+          <h2>The first impression is everything</h2>
+          <p>In fashion, you have one pass down the runway. In web design, you have about three seconds before someone decides whether to stay. Both disciplines demand that the opening statement — the hero, the first look — does enormous work. It needs to immediately communicate who you are, what you stand for, and why it's worth paying attention.</p>
+          <h2>Consistency builds a world</h2>
+          <p>The most iconic fashion houses are recognizable before you see the label. Chanel, Bottega, The Row — their design language is so consistent that every piece feels like it belongs to a larger universe. That's exactly what great web design does. A cohesive typography system, a disciplined color palette, and consistent spacing create a world the user can trust and navigate intuitively.</p>
+          <h2>Trend vs. timeless</h2>
+          <p>Fashion cycles through trends faster than almost any other industry, but the brands that last are the ones with a timeless point of view. Web design has the same trap — chasing the latest UI trend at the expense of clarity and longevity. The best websites, like the best wardrobes, are built around enduring principles with thoughtful nods to the moment.</p>
+          <h2>Emotion is the point</h2>
+          <p>At its core, fashion is about how it makes you feel. Confident, powerful, effortless, seen. Web design should aim for the same. The best interfaces don't just function well — they make the experience feel good. That's not soft or subjective. It's the whole point.</p>
+          <p>Design, whether worn or navigated, is communication. Fashion taught me to lead with intention, respect the viewer's eye, and never underestimate the power of a well-considered detail.</p>
+        </div>
+      </div>
+      <div class="article-sidebar">
+        <div class="article-author-avatar">🧠</div>
+        <div class="article-author-name">Paige Townshend</div>
+        <div class="article-author-handle">@paigetownshend</div>
+        </div></div></div></main></body></html>
